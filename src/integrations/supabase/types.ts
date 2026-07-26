@@ -14,16 +14,144 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      login_logs: {
+        Row: {
+          browser: string | null
+          id: string
+          ip_address: string | null
+          login_time: string
+          logout_time: string | null
+          student_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          browser?: string | null
+          id?: string
+          ip_address?: string | null
+          login_time?: string
+          logout_time?: string | null
+          student_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          browser?: string | null
+          id?: string
+          ip_address?: string | null
+          login_time?: string
+          logout_time?: string | null
+          student_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "login_logs_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      students: {
+        Row: {
+          created_at: string
+          department: string
+          digital_id: string
+          email: string
+          faculty: string
+          first_name: string
+          id: string
+          is_active: boolean
+          last_name: string
+          level: string
+          matric_number: string
+          phone: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          department: string
+          digital_id?: string
+          email: string
+          faculty: string
+          first_name: string
+          id?: string
+          is_active?: boolean
+          last_name: string
+          level: string
+          matric_number: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          department?: string
+          digital_id?: string
+          email?: string
+          faculty?: string
+          first_name?: string
+          id?: string
+          is_active?: boolean
+          last_name?: string
+          level?: string
+          matric_number?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      next_digital_id: { Args: never; Returns: string }
+      verify_credential: {
+        Args: { _digital_id: string }
+        Returns: {
+          department: string
+          digital_id: string
+          faculty: string
+          full_name: string
+          level: string
+          matric_number: string
+          status: string
+        }[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "student"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +278,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "student"],
+    },
   },
 } as const
