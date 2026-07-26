@@ -102,7 +102,7 @@ function StudentDashboard() {
         ) : (
           <>
             <div>
-              <h1 className="text-2xl font-bold">Welcome, {student.first_name} 👋</h1>
+              <h1 className="text-2xl font-bold">Welcome, {student.first_name}</h1>
               <p className="text-sm text-muted-foreground">
                 Your unified digital credential is active. Use it across all university services.
               </p>
