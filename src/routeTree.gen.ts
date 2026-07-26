@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VerifyDigitalIdRouteImport } from './routes/verify.$digitalId'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedServiceSlugRouteImport } from './routes/_authenticated/service.$slug'
 
@@ -21,6 +22,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyDigitalIdRoute = VerifyDigitalIdRouteImport.update({
+  id: '/verify/$digitalId',
+  path: '/verify/$digitalId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -38,11 +44,13 @@ const AuthenticatedServiceSlugRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/verify/$digitalId': typeof VerifyDigitalIdRoute
   '/service/$slug': typeof AuthenticatedServiceSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/verify/$digitalId': typeof VerifyDigitalIdRoute
   '/service/$slug': typeof AuthenticatedServiceSlugRoute
 }
 export interface FileRoutesById {
@@ -50,24 +58,27 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/verify/$digitalId': typeof VerifyDigitalIdRoute
   '/_authenticated/service/$slug': typeof AuthenticatedServiceSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/service/$slug'
+  fullPaths: '/' | '/dashboard' | '/verify/$digitalId' | '/service/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/service/$slug'
+  to: '/' | '/dashboard' | '/verify/$digitalId' | '/service/$slug'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/_authenticated/dashboard'
+    | '/verify/$digitalId'
     | '/_authenticated/service/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  VerifyDigitalIdRoute: typeof VerifyDigitalIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -84,6 +95,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify/$digitalId': {
+      id: '/verify/$digitalId'
+      path: '/verify/$digitalId'
+      fullPath: '/verify/$digitalId'
+      preLoaderRoute: typeof VerifyDigitalIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard': {
@@ -119,6 +137,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  VerifyDigitalIdRoute: VerifyDigitalIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
