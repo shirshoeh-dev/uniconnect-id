@@ -480,10 +480,12 @@ function FormField({
   onChange: (value: string) => void;
   type?: string;
 }) {
+  const id = useId();
   return (
     <div className="space-y-2">
-      <Label>{label}</Label>
+      <Label htmlFor={id}>{label}</Label>
       <Input
+        id={id}
         type={type}
         value={value}
         required
@@ -493,3 +495,4 @@ function FormField({
     </div>
   );
 }
+
